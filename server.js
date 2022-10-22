@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Log = require('./models/logs.js');
+const logData = require('./models/seed.js');
 
 require('dotenv').config();
 
@@ -23,7 +24,14 @@ app.use(express.urlencoded({extended: true}))
 
 // I N D U C E S
 
-// INDEX 
+//Seed
+app.get('/logs/seed', (req, res) => {
+    Log.create(logData, (error, data) => {
+        res.redirect("/logs")
+    })
+})
+
+// INDEX
 
 
 // NEW
@@ -44,13 +52,24 @@ app.post('/logs', (req, res) => {
     }
 
     Log.create(req.body, (error, createdLog) => {
-        res.send(req.body);
+        res.redirect('/logs/:id');
     })
 })
 
 // EDIT
 
 // SHOW
+
+app.get('/logs/:id', (req, res) => {
+
+})
+
+//Seed
+app.get('/logs/seed', (req, res) => {
+    Log.create(logData, (error, data) => {
+        res.redirect("/logs")
+    })
+})
 
 //LISTENER
 app.listen(PORT, () => console.log("Stardate 47856.2: Still Alive"))
